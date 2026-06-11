@@ -2,8 +2,8 @@
 
 Thanks for buying ButterCut Pro!
 
-**To install:** open this folder in the **Claude** desktop app (Code tab) — or in
-Claude Code in a terminal — and say:
+**To install:** open this folder in the **Claude** desktop app — the **Cowork**
+tab is the easiest place (Claude Code works too) — and say:
 
 > Install ButterCut Pro.
 
