@@ -20,24 +20,26 @@ You might be running in either of two environments — check with `uname -s`:
 - **Claude Cowork** (prints `Linux`) — the preferred install environment.
   Your commands run inside Cowork's Linux VM, which has git built in, so
   there's nothing to install. Two things to know: the VM's `~` is **not** the
-  buyer's Mac home folder (Step 4 handles finding the real one), and Cowork's
+  buyer's Mac home folder (Step 3 handles finding the real one), and Cowork's
   network sandbox may ask the user to allow `tubesalt.com` the first time you
   contact it — tell them to approve it.
 - **Claude Code on the Mac** (prints `Darwin`) — commands run directly on the
   Mac using the Mac's own git, which may need installing first (Step 1).
 
 Either way, the end state is the same: ButterCut Pro runs in **Claude Code in
-Local mode on the Mac**, so the *Mac itself* must end up with git installed
-(via Apple's Xcode Command Line Tools) — even when the download happens inside
-Cowork's VM. From Cowork you can't run commands on the Mac, so that one step
-is user-guided (Step 3); start it early so Apple's download runs in the
-background while you do everything else.
+Local mode on the Mac**, and Claude Code needs git on the Mac (via Apple's
+Xcode Command Line Tools). The user never has to touch Terminal for that:
+when git is missing, the first git command run on the Mac makes macOS pop its
+own "Install Command Line Developer Tools?" dialog, and ButterCut Pro's
+`setup` skill checks for the tools as its very first step. So from Cowork
+your only job for the Mac's git is a heads-up at hand-off (Step 7): a dialog
+may appear — click **Install**.
 
-The plan: confirm git works here → ask for the license → get git installing
-on their Mac → pick a destination that ends up on the Mac → download with the
-license attached → save the license inside the install so updates work
-forever after → verify → hand off to Claude Code, where ButterCut Pro
-actually runs, for dependency setup.
+The plan: confirm git works here → ask for the license → pick a destination
+that ends up on the Mac → download with the license attached → save the
+license inside the install so updates work forever after → verify → hand off
+to Claude Code, where ButterCut Pro actually runs, for dependency setup
+(which gets the Mac's own git installed via Apple's dialog if it's missing).
 
 **The license key is a secret.** It must only ever be sent to `tubesalt.com` —
 the persisted git config below is scoped to that host so it never goes to any
@@ -54,17 +56,19 @@ uname -s && git --version
 ```
 
 - In **Cowork** (`Linux`): git is built into the VM — this just confirms it.
-  The *Mac's* git is handled separately in Step 3.
-- On the **Mac** (`Darwin`): if git is missing, tell the user their Mac needs
-  a small free tool from Apple first, and run:
+  (The *Mac's* git is handled at hand-off — see Step 7.)
+- On the **Mac** (`Darwin`): if git is missing, the check itself makes macOS
+  show an **"Install Command Line Developer Tools?"** window. Tell the user a
+  small free tool from Apple is needed and to click **Install** in the window
+  that just appeared, agree, and let it run (about ten minutes). If no window
+  appeared, run:
 
   ```bash
   xcode-select --install
   ```
 
-  A window pops up — tell them to click **Install** and wait for it to finish
-  (a few minutes), then re-run the check. Don't continue until `git --version`
-  succeeds. (This also covers Step 3 — skip it.)
+  Once it finishes, re-run the check. Don't continue until `git --version`
+  succeeds.
 
 ## Step 2 — Ask for their license
 
@@ -77,35 +81,7 @@ email Lemon Squeezy sent them):
 Trim any stray spaces from both. If they can't find the receipt, ask them to
 search their inbox for "ButterCut Pro" before going further.
 
-## Step 3 — Get git installing on their Mac (Cowork only)
-
-Skip this on `Darwin` — Step 1 already handled it there.
-
-ButterCut Pro runs in Claude Code on the Mac after this install, and that
-needs git **on the Mac** (Cowork's built-in git doesn't count — it lives in
-the VM). You can't run Mac commands from Cowork, so guide the user through it
-now and let Apple's download run in the background while you continue:
-
-Tell the user (in your own friendly words) that their Mac needs one small
-free tool from Apple, and to do this on their Mac:
-
-1. Press **⌘ + Space**, type **Terminal**, press **Return**.
-2. Paste this into the Terminal window and press **Return**:
-
-   ```
-   xcode-select --install
-   ```
-
-3. A window pops up — click **Install**, agree, and let it run (a few
-   minutes). They can close Terminal and come back to this chat right away;
-   it installs on its own.
-4. If Terminal instead says the tools are **already installed**, even better —
-   their Mac is ready and there's nothing to do.
-
-Don't wait for it to finish — continue with Step 4 immediately. You'll remind
-them to confirm it finished at hand-off time (Step 8).
-
-## Step 4 — Pick the destination (it must end up on the Mac)
+## Step 3 — Pick the destination (it must end up on the Mac)
 
 ButterCut Pro belongs in the buyer's **Mac** home folder, as `buttercut-pro`.
 
@@ -129,25 +105,25 @@ Then make sure the destination is free:
 ls -d "$DEST" 2>/dev/null
 ```
 
-- **Nothing there** (the command errors): continue to Step 5.
+- **Nothing there** (the command errors): continue to Step 4.
 - **It exists and is already a ButterCut Pro install** (`git -C "$DEST"
   remote get-url origin` prints `https://tubesalt.com/git/buttercut-pro.git`):
-  a previous install attempt got partway. Skip the download (Step 5) and
-  resume at Step 6 to (re)save the license, then verify and hand off as
+  a previous install attempt got partway. Skip the download (Step 4) and
+  resume at Step 5 to (re)save the license, then verify and hand off as
   normal.
 - **It exists but is something else**: stop and ask the user about the folder.
   Never delete or overwrite it — let them decide to move it or pick a
   different spot before you proceed.
 
-## Step 5 — Download ButterCut Pro
+## Step 4 — Download ButterCut Pro
 
 Run as one command, with the buyer's real values and the destination from
-Step 4:
+Step 3:
 
 ```bash
 BC_EMAIL='buyer@example.com'
 BC_KEY='THEIR-LICENSE-KEY'
-DEST="$HOME/buttercut-pro"   # or the Cowork destination from Step 4
+DEST="$HOME/buttercut-pro"   # or the Cowork destination from Step 3
 GIT_TERMINAL_PROMPT=0 git \
   -c "http.extraHeader=X-Buttercut-Email: $BC_EMAIL" \
   -c "http.extraHeader=X-Buttercut-License-Key: $BC_KEY" \
@@ -173,18 +149,18 @@ or to support. Do not keep retrying.
 **Any other failure** (no internet, server unreachable): explain it simply and
 suggest trying again in a few minutes.
 
-## Step 6 — Save the license inside the install
+## Step 5 — Save the license inside the install
 
 This makes future updates work without asking for the key again. The license
 lands in two places **inside the downloaded folder** (so it travels with the
 install and works identically once the Mac's own git takes over): a gitignored
 `.buttercut_pro_license` file, and the repo-local git config. Run as one
-command, same values as Step 5:
+command, same values as Step 4:
 
 ```bash
 BC_EMAIL='buyer@example.com'
 BC_KEY='THEIR-LICENSE-KEY'
-DEST="$HOME/buttercut-pro"   # same destination as Step 5
+DEST="$HOME/buttercut-pro"   # same destination as Step 4
 cd "$DEST"
 printf 'email=%s\nlicense_key=%s\n' "$BC_EMAIL" "$BC_KEY" > .buttercut_pro_license
 git config --unset-all 'http.https://tubesalt.com/.extraHeader' 2>/dev/null || true
@@ -194,7 +170,7 @@ git config --add 'http.https://tubesalt.com/.extraHeader' "X-Buttercut-License-K
 
 (The config entries are scoped to `https://tubesalt.com/` only.)
 
-## Step 7 — Verify updates will work
+## Step 6 — Verify updates will work
 
 Confirm the saved credentials work on their own (no inline headers this time —
 this is exactly what the updater will do later):
@@ -203,11 +179,11 @@ this is exactly what the updater will do later):
 cd "$DEST" && GIT_TERMINAL_PROMPT=0 git fetch origin main && echo VERIFIED
 ```
 
-If `VERIFIED` prints, the install is good. If not, re-run Step 6 and try once
+If `VERIFIED` prints, the install is good. If not, re-run Step 5 and try once
 more; if it still fails, something is wrong with the license — follow the
-failure guidance in Step 5.
+failure guidance in Step 4.
 
-## Step 8 — Hand off to Claude Code for setup
+## Step 7 — Hand off to Claude Code for setup
 
 ButterCut Pro is on their Mac, but it **runs in Claude Code, not Cowork**, and
 its dependencies aren't installed yet. The `setup` skill inside the downloaded
@@ -217,14 +193,15 @@ install, in Claude Code.
 Tell the user (in your own friendly words):
 
 1. ButterCut Pro is downloaded and their license is saved.
-2. Check in on the Apple tools install from Step 3 — has it finished? If it's
-   still going, wait for it; the next part needs it.
-3. One last step, in a different tab: open the **buttercut-pro** folder (it's
+2. One last step, in a different tab: open the **buttercut-pro** folder (it's
    in their home folder) in **Claude Code** — in the Claude desktop app's
    **Code** tab, set the folder at the bottom to **buttercut-pro**, switch
-   **Cloud** to **Local**, and uncheck **worktree**. If the Mac asks to
-   install Apple's developer tools again here, click **Install** and let it
-   finish.
+   **Cloud** to **Local**, and uncheck **worktree**.
+3. **Heads-up:** if their Mac doesn't have Apple's developer tools yet, a
+   window will pop up — *"Install Command Line Developer Tools?"* — maybe
+   right away, maybe when setup starts. That's normal and one-time: click
+   **Install**, agree, and let it run (about ten minutes). Setup carries on
+   from there.
 4. Then paste:
 
    > Set up ButterCut.
