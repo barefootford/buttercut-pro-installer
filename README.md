@@ -12,8 +12,8 @@ Thanks for buying ButterCut Pro!
    icon shows up on the right side of your Dock). Click **Install**, agree,
    and let it finish — it takes about ten minutes. No message about Git? Your
    Mac is already set; carry on.
-3. In the Code tab, set the folder at the bottom to **this installer folder**,
-   switch **Cloud** to **Local**, and uncheck **worktree**.
+3. In the Code tab, set the folder at the bottom to **this installer folder**
+   and switch **Cloud** to **Local**.
 4. Type:
 
 > Install ButterCut Pro.

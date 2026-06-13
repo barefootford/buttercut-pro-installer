@@ -16,8 +16,8 @@ authenticated git: every request must carry the buyer's email and license key
 as two HTTP headers (`X-Buttercut-Email`, `X-Buttercut-License-Key`).
 
 You are running in **Claude Code on the Mac, in Local mode** — the README
-walked the buyer through getting there (Code tab → this folder → Local →
-worktree off), including installing Apple's command line developer tools if
+walked the buyer through getting there (Code tab → this folder → Local),
+including installing Apple's command line developer tools if
 their Mac lacked git (Claude Code prompts for that itself). So git should
 already work; Step 1 double-checks.
 
@@ -44,7 +44,7 @@ uname -s && git --version
 - If it prints `Linux`, you are **not** running on the Mac (this is a cloud or
   Cowork session). Stop and walk the user back to the README flow: in the
   Claude desktop app's **Code** tab, set the folder to this installer folder,
-  switch **Cloud** to **Local**, uncheck **worktree**, and ask again.
+  switch **Cloud** to **Local**, and ask again.
 - If git is missing, the check itself makes macOS show a window: *"The 'git'
   command requires the command line developer tools. Would you like to
   install the tools now?"* Tell the user to click **Install**, agree, and let
@@ -157,9 +157,11 @@ here; it has to run from inside the install.
 Tell the user (in your own friendly words):
 
 1. ButterCut Pro is downloaded and their license is saved.
-2. One last step: start a new session with the folder at the bottom of the
-   Code tab set to **buttercut-pro** (it's in their home folder) — still
-   **Local**, **worktree** still unchecked.
+2. One last step: start a new chat (**Cmd + N**) and, at the bottom of the
+   Code tab, set the folder to **buttercut-pro** (it's in their home
+   folder) — still **Local**, and if a **worktree** option appears, leave
+   it unchecked. (That folder is a real git checkout, unlike this installer
+   folder, so the Code tab may show git options it didn't show here.)
 3. Then paste:
 
    > Set up ButterCut.
