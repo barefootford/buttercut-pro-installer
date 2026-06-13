@@ -157,11 +157,11 @@ here; it has to run from inside the install.
 Tell the user (in your own friendly words):
 
 1. ButterCut Pro is downloaded and their license is saved.
-2. One last step: start a new session with the folder at the bottom of the
-   Code tab set to **buttercut-pro** (it's in their home folder) — still
-   **Local**, and if a **worktree** option appears, leave it unchecked.
-   (That folder is a real git checkout, unlike this installer folder, so
-   the Code tab may show git options it didn't show here.)
+2. One last step: start a new chat (**Cmd + N**) and, at the bottom of the
+   Code tab, set the folder to **buttercut-pro** (it's in their home
+   folder) — still **Local**, and if a **worktree** option appears, leave
+   it unchecked. (That folder is a real git checkout, unlike this installer
+   folder, so the Code tab may show git options it didn't show here.)
 3. Then paste:
 
    > Set up ButterCut.
