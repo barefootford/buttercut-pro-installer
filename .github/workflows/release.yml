@@ -1,0 +1,33 @@
+name: Publish installer zip
+
+# Rebuilds buttercut-pro-installer.zip on every push to main and publishes it
+# as an asset on the fixed `installer` release, so buttercut.io can link a
+# stable URL that always serves the latest installer:
+#   https://github.com/barefootford/buttercut-pro-installer/releases/download/installer/buttercut-pro-installer.zip
+# The --prefix makes the zip unpack to buttercut-pro-installer/ (not the
+# repo-name-plus-ref folder GitHub's auto-generated source zips produce).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build prefixed zip
+        run: git archive --format=zip --prefix=buttercut-pro-installer/ -o buttercut-pro-installer.zip HEAD
+      - name: Publish to the installer release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view installer >/dev/null 2>&1 \
+            || gh release create installer \
+                 --title "ButterCut Pro installer" \
+                 --notes "Latest ButterCut Pro installer, auto-built from main. Download buttercut-pro-installer.zip below."
+          gh release upload installer buttercut-pro-installer.zip --clobber

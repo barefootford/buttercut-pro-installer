@@ -1,0 +1,4 @@
+# Keep repo-tooling out of the installer zip that buyers download
+# (git archive honors export-ignore).
+.github export-ignore
+.gitattributes export-ignore
