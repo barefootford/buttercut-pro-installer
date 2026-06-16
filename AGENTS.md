@@ -23,8 +23,13 @@ already work; Step 1 double-checks.
 
 The plan: confirm git works → ask for the license → check the destination →
 download with the license attached → save the license inside the install so
-updates work forever after → verify → point them at ButterCut Pro's own
-`setup` for dependency install.
+updates work forever after → verify → run ButterCut Pro's own setup in place
+to install its dependencies → hand the buyer off to a fresh chat for editing.
+
+The setup steps are **not** in this file on purpose. ButterCut Pro ships its
+own setup instructions and updates them constantly; this installer stays thin
+and just runs whatever the freshly downloaded install says to do. Never copy
+setup steps in here — they would rot the moment ButterCut Pro changes.
 
 **The license key is a secret.** It must only ever be sent to `tubesalt.com` —
 the persisted git config below is scoped to that host so it never goes to any
@@ -148,23 +153,43 @@ If `VERIFIED` prints, the install is good. If not, re-run Step 5 and try once
 more; if it still fails, something is wrong with the license — follow the
 failure guidance in Step 4.
 
-## Step 7 — Point them at ButterCut Pro's own setup
+## Step 7 — Run ButterCut Pro's own setup
 
-ButterCut Pro is on their Mac, but its dependencies aren't installed yet. The
-`setup` skill inside the downloaded folder handles that — don't run it from
-here; it has to run from inside the install.
+ButterCut Pro is downloaded, but its dependencies (Ruby, Python, FFmpeg,
+WhisperX) aren't installed yet. ButterCut Pro carries its own setup
+instructions and keeps them current with every release — your job is to run
+them, not to know what they are. Don't reproduce any setup steps here.
 
-Tell the user (in your own friendly words):
+Setup has to run with the downloaded install as the working directory. Move
+into it, then read its setup instructions and follow them top to bottom:
 
-1. ButterCut Pro is downloaded and their license is saved.
-2. One last step: start a new chat (**Cmd + N**) and, at the bottom of the
-   Code tab, set the folder to **buttercut-pro** (it's in their home
-   folder) — still **Local**, and if a **worktree** option appears, leave
-   it unchecked. (That folder is a real git checkout, unlike this installer
-   folder, so the Code tab may show git options it didn't show here.)
-3. Then paste:
+```bash
+cd "$HOME/buttercut-pro"
+```
 
-   > Set up ButterCut.
+Now read `skills/setup/SKILL.md` from that folder (it pulls in
+`skills/setup/simple-setup.md` and other files itself) and carry out its steps
+from this directory. It installs everything with no Homebrew and no admin
+password — about five to ten minutes, mostly downloads. Keep the buyer posted
+in plain words while it runs ("installing the video tools now — this takes a
+few minutes"), and the same rule applies: if a step fails, stop and explain it
+plainly; never loop on a failing command.
 
-   That installs everything ButterCut needs (about five minutes), and then
-   they're ready to edit. This installer folder can be deleted afterwards.
+When setup reports everything installed and verified, ButterCut Pro is fully
+installed and ready to use — move on to the hand-off.
+
+## Step 8 — Hand off to editing
+
+The install is done. The only thing left is to move the buyer out of this
+throwaway installer folder and into ButterCut Pro itself, where they'll
+actually edit. Tell them (in your own friendly words):
+
+1. ButterCut Pro is installed and ready.
+2. To start using it, open a new chat (**Cmd + N**) and, at the bottom of the
+   Code tab, set the folder to **buttercut-pro** in their home folder — still
+   **Local**, and if a **worktree** option appears, leave it unchecked. (That
+   folder is a real git checkout, unlike this installer folder, so the Code tab
+   may show git options it didn't show here.)
+3. In that chat they can just say what they want — for example, "Tell me about
+   ButterCut" to get oriented, or describe the footage they want to cut.
+4. This installer folder has done its job and can be deleted.

@@ -23,7 +23,9 @@ Have two things from your purchase receipt ready:
 1. The **email address** you bought with
 2. Your **license key**
 
-Claude will ask for both, download ButterCut Pro onto your Mac, and walk you
-through the rest. The whole thing takes about five minutes.
+Claude will ask for both, then download ButterCut Pro and set it up on your
+Mac — installing everything it needs. The whole thing takes about ten minutes,
+mostly waiting on downloads. When it's done, Claude shows you how to open
+ButterCut Pro and start editing.
 
 Run into a snag? Email Andrew directly: Andrew@tubesalt.com
