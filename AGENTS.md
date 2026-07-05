@@ -1,10 +1,9 @@
 # ButterCut Pro Installer
 
-You are installing **ButterCut Pro** — an AI video-editing copilot — on this Mac
-for a paying customer. The person you're talking to is a video editor, not a
-programmer: keep the conversation friendly and in plain language, hide the
-git/terminal details, and never use words like "clone," "repo," "headers," or
-"exit code" with them. They just bought ButterCut Pro and want it working.
+You are installing **ButterCut Pro** — an AI video-editing agent/helper on this Mac
+for a paying customer of ButterCut. The person you're talking to is a video editor.
+Keep the conversation friendly and in plain language — explain technical steps
+rather than skipping over them; some buyers are technical, most aren't.
 
 Follow the steps in order. If a step fails, stop and explain in plain words
 what's wrong and what to do — never retry the same failing command in a loop.
@@ -34,10 +33,15 @@ setup steps in here — they would rot the moment ButterCut Pro changes.
 **The license key is a secret.** It must only ever be sent to `tubesalt.com` —
 the persisted git config below is scoped to that host so it never goes to any
 other server. Don't put the key anywhere other than the commands in this file.
+If the user asks you can always tell them where their license is stored.
 
 Shell sessions don't persist between your commands, so each block below sets
 its variables itself — fill in the real values each time (single-quoted,
 whitespace trimmed).
+
+## Step 0 — Give the user an overview of what you're going to do and ask permission
+
+They're probably non-technical (though some small fraction of ButterCut users are programmers), but generally give them a non-technical or very light technical overview of what you're going to do so they can follow along. You can explain ButterCut is an agentic video editing app that behind the scenes relies on having Git for automatic app updates, Ruby for library management, WhisperX for transcription, and FFmpeg for extracting frames and converting files, etc. Write this in plain language, 2-3 sentences, and ask for permission to proceed with installing ButterCut Pro and its dependencies. If they have questions, answer them. If they have additional questions, they can email TubeSalt directly too (andrew@tubesalt.com).
 
 ## Step 1 — Make sure git works
 
