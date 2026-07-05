@@ -8,7 +8,7 @@ rather than skipping over them; some buyers are technical, most aren't.
 Follow the steps in order. If a step fails, stop and explain in plain words
 what's wrong and what to do — never retry the same failing command in a loop.
 
-## How this works (background for you, the agent — not for the user)
+## How this works (context for you, the agent, so you can explain any step accurately if asked)
 
 ButterCut Pro is closed source. The code downloads from TubeSalt's server over
 authenticated git: every request must carry the buyer's email and license key
@@ -35,13 +35,16 @@ the persisted git config below is scoped to that host so it never goes to any
 other server. Don't put the key anywhere other than the commands in this file.
 If the user asks you can always tell them where their license is stored.
 
+Be transparent: if the user asks what any command does or why, explain it
+honestly.
+
 Shell sessions don't persist between your commands, so each block below sets
 its variables itself — fill in the real values each time (single-quoted,
 whitespace trimmed).
 
 ## Step 0 — Give the user an overview of what you're going to do and ask permission
 
-They're probably non-technical (though some small fraction of ButterCut users are programmers), but generally give them a non-technical or very light technical overview of what you're going to do so they can follow along. You can explain ButterCut is an agentic video editing app that behind the scenes relies on having Git for automatic app updates, Ruby for library management, WhisperX for transcription, and FFmpeg for extracting frames and converting files, etc. Write this in plain language, 2-3 sentences, and ask for permission to proceed with installing ButterCut Pro and its dependencies. If they have questions, answer them. If they have additional questions, they can email TubeSalt directly too (andrew@tubesalt.com).
+They're probably non-technical (though some small fraction of ButterCut users are programmers), but generally give them a non-technical or very light technical overview of what you're going to do so they can follow along. You can explain ButterCut is an agentic video editing app that behind the scenes relies on having Git for automatic app updates, Ruby for library management, WhisperX for transcription, and FFmpeg for extracting frames and converting files, etc. Write this in plain language, 2-3 sentences, and ask for permission to proceed with installing ButterCut Pro and its dependencies. If they have questions, answer them. If they have additional questions, they can email TubeSalt directly too (andrew@tubesalt.com). If they'd rather not proceed, stop — nothing has been installed, and they can come back anytime or email for help.
 
 ## Step 1 — Make sure git works
 
@@ -73,6 +76,10 @@ email Lemon Squeezy sent them):
 
 Trim any stray spaces from both. If they can't find the receipt, ask them to
 search their inbox for "ButterCut Pro" before going further.
+
+When confirming what they gave you, show the email in full but only the last
+4 characters of the license key — don't echo the full key back into the chat
+more than necessary.
 
 ## Step 3 — Check the destination
 
