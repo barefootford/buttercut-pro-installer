@@ -1,7 +1,7 @@
 # ButterCut Pro Installer
 
 You are installing **ButterCut Pro** — an AI video-editing agent/helper on this
-computer (a Mac or a Windows PC) for a paying customer of ButterCut. The person you're talking to is a video
+computer for a paying customer of ButterCut. The person you're talking to is a video
 editor. Keep the conversation friendly and in plain language — Some small fraction
 of buyers are technical, most aren't so generally keep a non-technical tone. 
 
@@ -23,9 +23,7 @@ as two HTTP headers (`X-Buttercut-Email`, `X-Buttercut-License-Key`).
 You are running in **Claude Code inside the Claude desktop app, in Local
 mode**, on the buyer's Mac or Windows PC — the README walked the buyer through
 getting there (Code tab → this folder → Local), including installing git if
-their machine lacked it (Apple's command line developer tools on a Mac; Git
-for Windows on a PC). So git should already work; Step 1 double-checks, and
-it's also where you learn which platform you're on.
+their machine lacked it. So git should already work; Step 1 double-checks.
 
 The plan: confirm git works → ask for the license → check the destination →
 download with the license attached → save the license inside the install so
@@ -53,7 +51,7 @@ whitespace trimmed).
 
 They're probably non-technical (though some small fraction of ButterCut users are programmers), but generally give them a non-technical or very light technical overview of what you're going to do so they can follow along. You can explain ButterCut is an agentic video editing app that behind the scenes relies on having Git for automatic app updates, Ruby for library management, WhisperX for transcription, and FFmpeg for extracting frames and converting files, etc. Write this in plain language, 2-3 sentences, and ask for permission to proceed with installing ButterCut Pro and its dependencies. If they have questions, answer them. If they have additional questions, they can email TubeSalt directly too (andrew@tubesalt.com). If they'd rather not proceed, stop — nothing has been installed, and they can come back anytime or email for help.
 
-## Step 1 — Make sure git works (and learn the platform)
+## Step 1 — Make sure git works
 
 ```bash
 uname -s && git --version
@@ -61,8 +59,7 @@ uname -s && git --version
 
 - `Darwin` plus a git version — this is a **Mac**. Continue to Step 2.
 - `MINGW64_NT…` (or `MSYS…`) plus a git version — this is **Windows** with Git
-  for Windows installed, and you're in Git Bash. Continue to Step 2 and follow
-  the "On Windows" notes as you go.
+  for Windows installed. Continue to Step 2.
 - If it prints `Linux`, you are **not** running on the buyer's machine (this is
   a cloud or Cowork session). Stop and walk the user back to the README flow:
   in the Claude desktop app's **Code** tab, set the folder to this installer
@@ -107,10 +104,8 @@ more than necessary.
 
 ## Step 3 — Check the destination
 
-ButterCut Pro belongs in the buyer's home folder, as `~/buttercut-pro` (on
-Windows that's `C:\Users\<name>\buttercut-pro`; Git Bash spells it
-`~/buttercut-pro` too, so the commands are the same). Make sure that spot is
-free:
+ButterCut Pro belongs in the buyer's home folder, as `~/buttercut-pro`. Make
+sure that spot is free:
 
 ```bash
 DEST="$HOME/buttercut-pro"
@@ -142,8 +137,7 @@ GIT_TERMINAL_PROMPT=0 git \
   clone https://tubesalt.com/git/buttercut-pro.git "$DEST"
 ```
 
-(`core.longpaths` keeps long clip and skill filenames from tripping Windows'
-path-length limit during checkout; macOS git ignores it.)
+(`core.longpaths` is for Windows' path-length limit; macOS git ignores it.)
 
 **If it succeeds**, tell the user ButterCut Pro is downloaded and move on.
 
@@ -176,12 +170,9 @@ printf 'email=%s\nlicense_key=%s\n' "$BC_EMAIL" "$BC_KEY" > .buttercut_pro_licen
 git config --unset-all 'http.https://tubesalt.com/.extraHeader' 2>/dev/null || true
 git config --add 'http.https://tubesalt.com/.extraHeader' "X-Buttercut-Email: $BC_EMAIL"
 git config --add 'http.https://tubesalt.com/.extraHeader' "X-Buttercut-License-Key: $BC_KEY"
-git config core.longpaths true
 ```
 
-(The header entries are scoped to `https://tubesalt.com/` only. The
-`core.longpaths` line makes future updates as safe as the clone was on
-Windows; macOS git ignores it.)
+(The config entries are scoped to `https://tubesalt.com/` only.)
 
 ## Step 6 — Verify updates will work
 
@@ -212,11 +203,9 @@ cd "$HOME/buttercut-pro"
 ```
 
 Now read `skills/setup/SKILL.md` from that folder (it pulls in
-`skills/setup/simple-setup.md`, `skills/setup/windows-setup.md`, and other
-files itself, and detects the platform on its own — nothing to do differently
-on Windows here) and carry out its steps from this directory. It installs
-everything with no Homebrew and no admin password — about five to ten minutes,
-mostly downloads. Keep the buyer posted
+`skills/setup/simple-setup.md` and other files itself) and carry out its steps
+from this directory. It installs everything with no Homebrew and no admin
+password — about five to ten minutes, mostly downloads. Keep the buyer posted
 in plain words while it runs ("installing the video tools now — this takes a
 few minutes"), and the same rule applies: if a step fails, stop and explain it
 plainly; never loop on a failing command.
