@@ -6,12 +6,16 @@ Thanks for buying ButterCut Pro!
 
 1. Open the **Claude** desktop app and click the **Code** tab (top of the
    window).
-2. If a message pops up saying **Git is required** — click **Not now**. Your
-   Mac will then offer to install Apple's free *command line developer tools*:
-   a window appears saying the "git" command requires them (or an installer
-   icon shows up on the right side of your Dock). Click **Install**, agree,
-   and let it finish — it takes about ten minutes. No message about Git? Your
-   Mac is already set; carry on.
+2. If a message pops up saying **Git is required** — click **Not now**, then:
+   - **On a Mac**, your Mac will offer to install Apple's free *command line
+     developer tools*: a window appears saying the "git" command requires
+     them (or an installer icon shows up on the right side of your Dock).
+     Click **Install**, agree, and let it finish — it takes about ten minutes.
+   - **On Windows**, just carry on — Claude installs the free *Git for
+     Windows* for you in the next step, and will ask you to quit and reopen
+     the Claude app once when it's in.
+
+   No message about Git? Your computer is already set; carry on.
 3. In the Code tab, set the folder at the bottom to **this installer folder**
    and switch **Cloud** to **Local**.
 4. Type:
@@ -24,7 +28,7 @@ Have two things from your purchase receipt ready:
 2. Your **license key**
 
 Claude will ask for both, then download ButterCut Pro and set it up on your
-Mac — installing everything it needs. The whole thing takes about ten minutes,
+Mac or Windows PC — installing everything it needs. The whole thing takes about ten minutes,
 mostly waiting on downloads. When it's done, Claude shows you how to open
 ButterCut Pro and start editing.
 

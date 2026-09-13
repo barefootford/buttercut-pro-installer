@@ -1,7 +1,7 @@
 # ButterCut Pro Installer
 
 You are installing **ButterCut Pro** — an AI video-editing agent/helper on this
-Mac for a paying customer of ButterCut. The person you're talking to is a video
+computer for a paying customer of ButterCut. The person you're talking to is a video
 editor. Keep the conversation friendly and in plain language — Some small fraction
 of buyers are technical, most aren't so generally keep a non-technical tone. 
 
@@ -20,11 +20,10 @@ ButterCut Pro is closed source. The code downloads from TubeSalt's server over
 authenticated git: every request must carry the buyer's email and license key
 as two HTTP headers (`X-Buttercut-Email`, `X-Buttercut-License-Key`).
 
-You are running in **Claude Code on the Mac, in Local mode** — the README
-walked the buyer through getting there (Code tab → this folder → Local),
-including installing Apple's command line developer tools if
-their Mac lacked git (Claude Code prompts for that itself). So git should
-already work; Step 1 double-checks.
+You are running in **Claude Code inside the Claude desktop app, in Local
+mode**, on the buyer's Mac or Windows PC — the README walked the buyer through
+getting there (Code tab → this folder → Local), including installing git if
+their machine lacked it. So git should already work; Step 1 double-checks.
 
 The plan: confirm git works → ask for the license → check the destination →
 download with the license attached → save the license inside the install so
@@ -58,12 +57,28 @@ They're probably non-technical (though some small fraction of ButterCut users ar
 uname -s && git --version
 ```
 
-- Expect `Darwin` plus a git version — then continue to Step 2.
-- If it prints `Linux`, you are **not** running on the Mac (this is a cloud or
-  Cowork session). Stop and walk the user back to the README flow: in the
-  Claude desktop app's **Code** tab, set the folder to this installer folder,
-  switch **Cloud** to **Local**, and ask again.
-- If git is missing, the check itself makes macOS show a window: *"The 'git'
+- `Darwin` plus a git version — this is a **Mac**. Continue to Step 2.
+- `MINGW64_NT…` (or `MSYS…`) plus a git version — this is **Windows** with Git
+  for Windows installed. Continue to Step 2.
+- If it prints `Linux`, you are **not** running on the buyer's machine (this is
+  a cloud or Cowork session). Stop and walk the user back to the README flow:
+  in the Claude desktop app's **Code** tab, set the folder to this installer
+  folder, switch **Cloud** to **Local**, and ask again.
+- If `uname` itself isn't found (the error looks like PowerShell, not bash),
+  this is **Windows without Git for Windows** — Claude fell back to PowerShell.
+  Install Git with Windows' built-in package manager (no admin password on a
+  normal personal PC):
+
+  ```powershell
+  winget install --id Git.Git -e --accept-source-agreements --accept-package-agreements
+  ```
+
+  Then tell the user to **quit the Claude app completely and reopen it**
+  (right-click the Claude icon in the system tray, near the clock, and choose
+  Quit — closing the window isn't enough), set the Code tab back to this
+  folder, and ask again. The shell only picks up Git when the app starts.
+  Re-run the check; don't continue until it prints `MINGW…` and a git version.
+- On a Mac, if git is missing, the check itself makes macOS show a window: *"The 'git'
   command requires the command line developer tools. Would you like to
   install the tools now?"* Tell the user to click **Install**, agree, and let
   it run — about ten minutes; an installer icon may appear on the right side
@@ -116,10 +131,13 @@ BC_EMAIL='buyer@example.com'
 BC_KEY='THEIR-LICENSE-KEY'
 DEST="$HOME/buttercut-pro"
 GIT_TERMINAL_PROMPT=0 git \
+  -c core.longpaths=true \
   -c "http.extraHeader=X-Buttercut-Email: $BC_EMAIL" \
   -c "http.extraHeader=X-Buttercut-License-Key: $BC_KEY" \
   clone https://tubesalt.com/git/buttercut-pro.git "$DEST"
 ```
+
+(`core.longpaths` is for Windows' path-length limit; macOS git ignores it.)
 
 **If it succeeds**, tell the user ButterCut Pro is downloaded and move on.
 
@@ -202,9 +220,10 @@ throwaway installer folder and into ButterCut Pro itself, where they'll
 actually edit. Tell them (in your own friendly words):
 
 1. ButterCut Pro is installed and ready.
-2. To start using it, open a new chat (**Cmd + N**) and, at the bottom of the
-   Code tab, set the folder to **buttercut-pro** in their home folder — still
-   **Local**, and if a **worktree** option appears, leave it unchecked. (That
+2. To start using it, open a new chat (**Cmd + N** on a Mac, **Ctrl + N** on
+   Windows) and, at the bottom of the Code tab, set the folder to
+   **buttercut-pro** in their home folder (`C:\Users\<name>\buttercut-pro` on
+   Windows) — still **Local**, and if a **worktree** option appears, leave it unchecked. (That
    folder is a real git checkout, unlike this installer folder, so the Code tab
    may show git options it didn't show here.)
 3. In that chat they can just say what they want — for example, "Tell me about
