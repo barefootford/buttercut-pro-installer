@@ -27,10 +27,6 @@ their machine lacked it (Apple's command line developer tools on a Mac; Git
 for Windows on a PC). So git should already work; Step 1 double-checks, and
 it's also where you learn which platform you're on.
 
-On Windows, Git for Windows makes the working shell **Git Bash**, so every
-command in this file runs unchanged there (`$HOME` is `C:\Users\<name>`). The
-few places Windows differs are called out inline as "On Windows".
-
 The plan: confirm git works → ask for the license → check the destination →
 download with the license attached → save the license inside the install so
 updates work forever after → verify → run ButterCut Pro's own setup in place
